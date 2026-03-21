@@ -7,35 +7,35 @@
 
 #---------------------------------- Sprites ---------------------------------#
 
-#begin snake/snake_head
+#begin sprites/snake/snake_head
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:snake/snake_head.png
+/build:sprites/snake/snake_head.png
 
-#begin snake/snake_body
+#begin sprites/snake/snake_body
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:snake/snake_body.png
+/build:sprites/snake/snake_body.png
 
-#begin snake/snake_tail
+#begin sprites/snake/snake_tail
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:snake/snake_tail.png
+/build:sprites/snake/snake_tail.png
 
-#begin food/food_apple_0
+#begin sprites/food/food_apple_0
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:food/food_apple_0.png
+/build:sprites/food/food_apple_0.png
 
-#begin food/food_apple_1
+#begin sprites/food/food_apple_1
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:food/food_apple_1.png
+/build:sprites/food/food_apple_1.png
 
-#begin food/food_apple_2
+#begin sprites/food/food_apple_2
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:food/food_apple_2.png
+/build:sprites/food/food_apple_2.png
 
 #begin backgrounds/background_gradient
 /importer:TextureImporter
@@ -47,37 +47,37 @@
 /processor:TextureProcessor
 /build:backgrounds/grid_tile.png
 
-#begin ui/button_normal
+#begin sprites/ui/button_normal
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:ui/button_normal.png
+/build:sprites/ui/button_normal.png
 
-#begin ui/button_hover
+#begin sprites/ui/button_hover
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:ui/button_hover.png
+/build:sprites/ui/button_hover.png
 
-#begin ui/button_pressed
+#begin sprites/ui/button_pressed
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:ui/button_pressed.png
+/build:sprites/ui/button_pressed.png
 
-#begin ui/button_disabled
+#begin sprites/ui/button_disabled
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:ui/button_disabled.png
+/build:sprites/ui/button_disabled.png
 
-#begin particles/particle_circle
+#begin sprites/particles/particle_circle
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:particles/particle_circle.png
+/build:sprites/particles/particle_circle.png
 
-#begin particles/particle_star
+#begin sprites/particles/particle_star
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:particles/particle_star.png
+/build:sprites/particles/particle_star.png
 
-#begin particles/particle_spark
+#begin sprites/particles/particle_spark
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:particles/particle_spark.png
+/build:sprites/particles/particle_spark.png
