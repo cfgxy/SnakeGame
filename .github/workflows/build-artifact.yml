@@ -49,6 +49,16 @@ jobs:
           # 创建干净的发布文件夹（避免嵌套）
           New-Item -ItemType Directory -Force -Path publish/win-clean
           Copy-Item -Path "publish/temp-win/*" -Destination "publish/win-clean/" -Recurse -Force
+          
+          # 复制 Content 目录（单文件发布可能不会自动包含 MonoGame Content）
+          $contentSrc = "src/SnakeGame.App/Content/bin/Windows/Content"
+          $contentDest = "publish/win-clean/Content"
+          if (Test-Path $contentSrc) {
+            Copy-Item -Path $contentSrc -Destination $contentDest -Recurse -Force
+            Write-Host "Copied Content directory from $contentSrc"
+          } else {
+            Write-Host "Warning: Content source not found at $contentSrc"
+          }
       
       - name: Create ZIP archive
         run: |
@@ -110,6 +120,14 @@ jobs:
           # 创建干净的发布文件夹（避免嵌套）
           mkdir -p publish/linux-clean
           cp -r publish/temp-linux/* publish/linux-clean/
+          
+          # 复制 Content 目录（单文件发布可能不会自动包含 MonoGame Content）
+          if [ -d "src/SnakeGame.App/Content/bin/DesktopGL/Content" ]; then
+            cp -r src/SnakeGame.App/Content/bin/DesktopGL/Content publish/linux-clean/
+            echo "Copied Content directory"
+          else
+            echo "Warning: Content source not found"
+          fi
       
       - name: Create TAR.GZ archive
         run: |
