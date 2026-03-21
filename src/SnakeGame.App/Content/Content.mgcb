@@ -5,9 +5,79 @@
 /profile:Reach
 /compress:False
 
-#---------------------------------- Content ---------------------------------#
+#---------------------------------- Sprites ---------------------------------#
 
-#begin UIFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/build:UIFont.spritefont
+#begin sprites/snake/snake_head
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/snake/snake_head.png
+
+#begin sprites/snake/snake_body
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/snake/snake_body.png
+
+#begin sprites/snake/snake_tail
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/snake/snake_tail.png
+
+#begin sprites/food/food_apple_0
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/food/food_apple_0.png
+
+#begin sprites/food/food_apple_1
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/food/food_apple_1.png
+
+#begin sprites/food/food_apple_2
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/food/food_apple_2.png
+
+#begin backgrounds/background_gradient
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:backgrounds/background_gradient.png
+
+#begin backgrounds/grid_tile
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:backgrounds/grid_tile.png
+
+#begin sprites/ui/button_normal
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/ui/button_normal.png
+
+#begin sprites/ui/button_hover
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/ui/button_hover.png
+
+#begin sprites/ui/button_pressed
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/ui/button_pressed.png
+
+#begin sprites/ui/button_disabled
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/ui/button_disabled.png
+
+#begin sprites/particles/particle_circle
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/particles/particle_circle.png
+
+#begin sprites/particles/particle_star
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/particles/particle_star.png
+
+#begin sprites/particles/particle_spark
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:sprites/particles/particle_spark.png

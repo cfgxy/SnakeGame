@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SnakeGame.App.Rendering;
 using SnakeGame.Core;
 using Color = Microsoft.Xna.Framework.Color;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
@@ -23,8 +24,13 @@ internal sealed class SnakeGameApp : Game
     private readonly AudioSettingsService audioSettingsService;
     private readonly IReadOnlyList<LevelDefinition> levels;
 
+    // 新渲染系统
+    private SpriteRenderer spriteRenderer = null!;
+    private LayerManager layerManager = null!;
+    private ParticleSystem particleSystem = null!;
+    
+    // 原有字段
     private SpriteBatch spriteBatch = null!;
-    private Texture2D pixel = null!;
     private SpriteFont font = null!;
     private KeyboardState previousKeyboard;
 
@@ -40,6 +46,7 @@ internal sealed class SnakeGameApp : Game
     private bool paused;
     private readonly Queue<Direction> bufferedDirections = new();
     private AccelerationState? runtimeAcceleration;
+    private TimeSpan foodAnimationClock = TimeSpan.Zero;
 
     public SnakeGameApp()
     {
@@ -68,9 +75,15 @@ internal sealed class SnakeGameApp : Game
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
-        pixel = new Texture2D(GraphicsDevice, 1, 1);
-        pixel.SetData([Color.White]);
-        font = Content.Load<SpriteFont>("UIFont");
+        
+        // 初始化新渲染系统
+        spriteRenderer = new SpriteRenderer(GraphicsDevice, Content);
+        spriteRenderer.LoadContent();
+        
+        layerManager = new LayerManager();
+        particleSystem = new ParticleSystem(spriteRenderer);
+        
+        font = spriteRenderer.Font;
     }
 
     protected override void Update(GameTime gameTime)
@@ -81,6 +94,12 @@ internal sealed class SnakeGameApp : Game
         {
             Exit();
         }
+
+        // 更新食物动画时钟
+        foodAnimationClock += gameTime.ElapsedGameTime;
+        
+        // 更新粒子系统
+        particleSystem.Update(gameTime);
 
         switch (screen)
         {
@@ -299,8 +318,30 @@ internal sealed class SnakeGameApp : Game
                 leaderboard = leaderboardStore.Load();
             }
 
+            // 触发粒子特效
+            if (result.AteApple && session.ApplePosition.HasValue)
+            {
+                var boardWidth = session.BoardSize.Width * CellSize;
+                const int boardX = 130;
+                const int boardY = 110;
+                var applePos = session.ApplePosition.Value;
+                var particlePos = new Vector2(boardX + applePos.X * CellSize + CellSize / 2f, boardY + applePos.Y * CellSize + CellSize / 2f);
+                particleSystem.Emit(particlePos, ParticleType.Food, 15);
+            }
+
             if (result.Status is GameStepStatus.GameOver or GameStepStatus.Completed)
             {
+                // 死亡粒子特效
+                if (session.SnakeSegments.Count > 0)
+                {
+                    var boardWidth = session.BoardSize.Width * CellSize;
+                    const int boardX = 130;
+                    const int boardY = 110;
+                    var headPos = session.SnakeSegments[0];
+                    var particlePos = new Vector2(boardX + headPos.X * CellSize + CellSize / 2f, boardY + headPos.Y * CellSize + CellSize / 2f);
+                    particleSystem.Emit(particlePos, ParticleType.Death, 30);
+                }
+                
                 screen = AppScreen.Result;
                 paused = false;
                 break;
@@ -400,8 +441,12 @@ internal sealed class SnakeGameApp : Game
     private void DrawSettings()
     {
         DrawTitle("设置");
+        
+        // 绘制 BGM 切换按钮
         var bgmText = audioSettings.BgmEnabled ? "BGM: 开启" : "BGM: 关闭";
-        spriteBatch.DrawString(font, bgmText, new Vector2(420, 260), new Color(255, 226, 124));
+        var buttonState = Rendering.ButtonState.Hover; // 简化处理，始终显示悬停状态
+        spriteRenderer.DrawButton(spriteBatch, new Vector2(420, 260), buttonState, bgmText);
+        
         spriteBatch.DrawString(font, "左右键或回车切换", new Vector2(420, 320), Color.White);
         DrawFooter("Esc 返回");
     }
@@ -418,33 +463,40 @@ internal sealed class SnakeGameApp : Game
         const int boardX = 130;
         const int boardY = 110;
 
-        DrawRectangle(new Rectangle(boardX - 8, boardY - 8, boardWidth + 16, boardHeight + 16), new Color(33, 48, 63));
-        DrawRectangle(new Rectangle(boardX, boardY, boardWidth, boardHeight), new Color(16, 28, 38));
+        // 绘制背景边框
+        spriteRenderer.DrawRectangle(spriteBatch, new Rectangle(boardX - 8, boardY - 8, boardWidth + 16, boardHeight + 16), new Color(33, 48, 63));
+        spriteRenderer.DrawRectangle(spriteBatch, new Rectangle(boardX, boardY, boardWidth, boardHeight), new Color(16, 28, 38));
 
-        DrawGrid(boardX, boardY, session.BoardSize);
-
+        // 绘制固定障碍
         foreach (var obstacle in session.FixedObstacles)
         {
-            DrawCell(boardX, boardY, obstacle, new Color(235, 167, 84));
+            var pos = new Vector2(boardX + obstacle.X * CellSize, boardY + obstacle.Y * CellSize);
+            spriteRenderer.DrawRectangle(spriteBatch, new Rectangle((int)pos.X + 2, (int)pos.Y + 2, CellSize - 4, CellSize - 4), new Color(235, 167, 84));
         }
 
+        // 绘制移动障碍
         foreach (var obstacle in session.MovingObstacles)
         {
-            DrawCell(boardX, boardY, obstacle.Track[obstacle.TrackIndex], new Color(232, 110, 82));
+            var trackPos = obstacle.Track[obstacle.TrackIndex];
+            var pos = new Vector2(boardX + trackPos.X * CellSize, boardY + trackPos.Y * CellSize);
+            spriteRenderer.DrawRectangle(spriteBatch, new Rectangle((int)pos.X + 2, (int)pos.Y + 2, CellSize - 4, CellSize - 4), new Color(232, 110, 82));
         }
 
+        // 绘制食物（带动画）
         if (session.ApplePosition.HasValue)
         {
-            DrawCell(boardX, boardY, session.ApplePosition.Value, new Color(211, 61, 81));
+            var frameIndex = (int)(foodAnimationClock.TotalSeconds * 3 % 3); // 每秒 3 帧
+            var pos = new Vector2(boardX + session.ApplePosition.Value.X * CellSize, boardY + session.ApplePosition.Value.Y * CellSize);
+            spriteRenderer.DrawFood(spriteBatch, pos, CellSize, frameIndex);
         }
 
-        for (var index = session.SnakeSegments.Count - 1; index >= 0; index--)
-        {
-            var color = index == 0 ? new Color(121, 231, 164) : new Color(63, 180, 122);
-            DrawCell(boardX, boardY, session.SnakeSegments[index], color);
-        }
+        // 绘制蛇（使用新 Sprite）
+        DrawSnakeNew(session, boardX, boardY);
 
         DrawHud(session, boardX + boardWidth + 40, boardY);
+
+        // 绘制粒子特效
+        particleSystem.Draw(spriteBatch);
 
         if (paused)
         {
@@ -514,9 +566,13 @@ internal sealed class SnakeGameApp : Game
     {
         for (var index = 0; index < options.Count; index++)
         {
-            var color = index == activeIndex ? new Color(255, 226, 124) : Color.White;
-            var prefix = index == activeIndex ? ">" : " ";
-            spriteBatch.DrawString(font, $"{prefix} {options[index]}", new Vector2(420, startY + (index * 52)), color);
+            var buttonX = 420f;
+            var buttonY = startY + (index * 60);
+            var isActive = index == activeIndex;
+            
+            // 绘制按钮背景
+            var buttonState = isActive ? Rendering.ButtonState.Hover : Rendering.ButtonState.Normal;
+            spriteRenderer.DrawButton(spriteBatch, new Vector2(buttonX, buttonY), buttonState, options[index]);
         }
     }
 
@@ -538,8 +594,14 @@ internal sealed class SnakeGameApp : Game
     private void DrawOverlayPanel(string title, string message, string footer)
     {
         var box = new Rectangle(350, 230, 540, 220);
-        DrawRectangle(box, new Color(10, 18, 26) * 0.95f);
-        DrawRectangle(new Rectangle(box.X, box.Y, box.Width, 2), new Color(255, 226, 124));
+        
+        // 绘制半透明背景
+        spriteRenderer.DrawRectangle(spriteBatch, box, new Color(10, 18, 26) * 0.95f);
+        
+        // 绘制顶部金色边框
+        spriteRenderer.DrawRectangle(spriteBatch, new Rectangle(box.X, box.Y, box.Width, 4), new Color(255, 226, 124));
+        
+        // 绘制标题
         spriteBatch.DrawString(font, title, new Vector2(box.X + 40, box.Y + 30), new Color(255, 226, 124));
 
         if (!string.IsNullOrWhiteSpace(message))
@@ -555,7 +617,7 @@ internal sealed class SnakeGameApp : Game
 
     private void DrawRectangle(Rectangle rectangle, Color color)
     {
-        spriteBatch.Draw(pixel, rectangle, color);
+        spriteBatch.Draw(spriteRenderer.Pixel, rectangle, color);
     }
 
     // 低速关卡里，转向输入需要跨帧缓存，否则很容易在一次逻辑步进之间被采样丢失。
@@ -684,6 +746,49 @@ internal sealed class SnakeGameApp : Game
             (Direction.Left, Direction.Right) => true,
             (Direction.Right, Direction.Left) => true,
             _ => false
+        };
+    }
+    
+    /// <summary>
+    /// 使用新 Sprite 绘制蛇
+    /// </summary>
+    private void DrawSnakeNew(GameSession session, int boardX, int boardY)
+    {
+        var segments = session.SnakeSegments;
+        if (segments.Count == 0) return;
+        
+        // 绘制蛇尾
+        var tailPos = segments[^1];
+        var tailScreenPos = new Vector2(boardX + tailPos.X * CellSize, boardY + tailPos.Y * CellSize);
+        spriteRenderer.DrawSnakeTail(spriteBatch, tailScreenPos, CellSize);
+        
+        // 绘制蛇身（从尾到头，不包括头和尾）
+        for (int i = segments.Count - 2; i > 0; i--)
+        {
+            var segPos = segments[i];
+            var screenPos = new Vector2(boardX + segPos.X * CellSize, boardY + segPos.Y * CellSize);
+            spriteRenderer.DrawSnakeBody(spriteBatch, screenPos, CellSize);
+        }
+        
+        // 绘制蛇头
+        var headPos = segments[0];
+        var headScreenPos = new Vector2(boardX + headPos.X * CellSize, boardY + headPos.Y * CellSize);
+        var rotation = GetHeadRotation(session.CurrentDirection);
+        spriteRenderer.DrawSnakeHead(spriteBatch, headScreenPos, CellSize, rotation);
+    }
+    
+    /// <summary>
+    /// 获取蛇头旋转角度
+    /// </summary>
+    private static float GetHeadRotation(Direction direction)
+    {
+        return direction switch
+        {
+            Direction.Up => 0,
+            Direction.Right => MathF.PI / 2,
+            Direction.Down => MathF.PI,
+            Direction.Left => -MathF.PI / 2,
+            _ => 0
         };
     }
 }
