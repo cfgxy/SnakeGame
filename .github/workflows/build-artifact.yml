@@ -76,10 +76,13 @@ jobs:
       
       - name: Install fonts
         run: |
-          echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | sudo debconf-set-selections
           sudo apt-get update
-          sudo apt-get install -y fonts-liberation ttf-mscorefonts-installer
+          sudo apt-get install -y fonts-wqy-microhei fonts-liberation
           sudo fc-cache -fv
+      
+      - name: Use Linux font
+        run: |
+          cp src/SnakeGame.App/Content/UIFont-Linux.spritefont src/SnakeGame.App/Content/UIFont.spritefont
       
       - name: Setup .NET 8 SDK
         uses: actions/setup-dotnet@v4
