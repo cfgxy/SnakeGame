@@ -36,6 +36,7 @@ jobs:
       
       - name: Publish Windows x64
         run: |
+          # 发布到临时文件夹
           dotnet publish src/SnakeGame.App/SnakeGame.App.csproj `
             -c Release `
             -r win-x64 `
@@ -43,13 +44,17 @@ jobs:
             -p:PublishSingleFile=true `
             -p:IncludeNativeLibrariesForSelfExtract=true `
             -p:PublishReadyToRun=true `
-            -o publish/win-x64
+            -o publish/temp-win
+      
+          # 创建干净的发布文件夹（避免嵌套）
+          New-Item -ItemType Directory -Force -Path publish/win-clean
+          Copy-Item -Path "publish/temp-win/*" -Destination "publish/win-clean/" -Recurse -Force
       
       - name: Create ZIP archive
         run: |
-          Compress-Archive -Path publish/win-x64/* -DestinationPath SnakeGame-Windows-x64.zip
+          Compress-Archive -Path publish/win-clean/* -DestinationPath SnakeGame-Windows-x64.zip
           Write-Host "Created: SnakeGame-Windows-x64.zip"
-          Get-ChildItem -Recurse publish/win-x64 | Measure-Object -Property Length -Sum | Select-Object Count, @{Name="Size(MB)";Expression={[math]::Round($_.Sum/1MB,2)}}
+          Get-ChildItem -Recurse publish/win-clean | Measure-Object -Property Length -Sum | Select-Object Count, @{Name="Size(MB)";Expression={[math]::Round($_.Sum/1MB,2)}}
       
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
@@ -92,6 +97,7 @@ jobs:
       
       - name: Publish Linux x64
         run: |
+          # 发布到临时文件夹
           dotnet publish src/SnakeGame.App/SnakeGame.App.csproj \
             -c Release \
             -r linux-x64 \
@@ -99,11 +105,15 @@ jobs:
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:PublishReadyToRun=true \
-            -o publish/linux-x64
+            -o publish/temp-linux
+      
+          # 创建干净的发布文件夹（避免嵌套）
+          mkdir -p publish/linux-clean
+          cp -r publish/temp-linux/* publish/linux-clean/
       
       - name: Create TAR.GZ archive
         run: |
-          cd publish/linux-x64
+          cd publish/linux-clean
           tar -czvf ../../SnakeGame-Linux-x64.tar.gz *
           cd ../..
           echo "Created: SnakeGame-Linux-x64.tar.gz"
