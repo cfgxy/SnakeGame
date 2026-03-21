@@ -44,33 +44,26 @@ jobs:
             -p:PublishSingleFile=true `
             -p:IncludeNativeLibrariesForSelfExtract=true `
             -p:PublishReadyToRun=true `
-            -o publish/temp-win
-      
-          # 创建干净的发布文件夹（避免嵌套）
-          New-Item -ItemType Directory -Force -Path publish/win-clean
-          Copy-Item -Path "publish/temp-win/*" -Destination "publish/win-clean/" -Recurse -Force
+            -o publish/win-clean
           
-          # 复制 Content 目录（单文件发布可能不会自动包含 MonoGame Content）
+          # 删除可能不完整的 Content 目录，然后复制完整的
           $contentSrc = "src/SnakeGame.App/Content/bin/Windows/Content"
           $contentDest = "publish/win-clean/Content"
+          if (Test-Path $contentDest) {
+            Remove-Item -Path $contentDest -Recurse -Force
+            Write-Host "Removed incomplete Content directory"
+          }
           if (Test-Path $contentSrc) {
             Copy-Item -Path $contentSrc -Destination $contentDest -Recurse -Force
-            Write-Host "Copied Content directory from $contentSrc"
-          } else {
-            Write-Host "Warning: Content source not found at $contentSrc"
+            Write-Host "Copied complete Content directory from $contentSrc"
+            Get-ChildItem $contentDest -Recurse -Filter "*.xnb" | Measure-Object | Select-Object Count
           }
-      
-      - name: Create ZIP archive
-        run: |
-          Compress-Archive -Path publish/win-clean/* -DestinationPath SnakeGame-Windows-x64.zip
-          Write-Host "Created: SnakeGame-Windows-x64.zip"
-          Get-ChildItem -Recurse publish/win-clean | Measure-Object -Property Length -Sum | Select-Object Count, @{Name="Size(MB)";Expression={[math]::Round($_.Sum/1MB,2)}}
       
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
           name: SnakeGame-Windows-x64
-          path: SnakeGame-Windows-x64.zip
+          path: publish/win-clean/*
           retention-days: 30
           if-no-files-found: error
 
@@ -107,7 +100,7 @@ jobs:
       
       - name: Publish Linux x64
         run: |
-          # 发布到临时文件夹
+          # 发布到输出目录
           dotnet publish src/SnakeGame.App/SnakeGame.App.csproj \
             -c Release \
             -r linux-x64 \
@@ -115,33 +108,26 @@ jobs:
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:PublishReadyToRun=true \
-            -o publish/temp-linux
-      
-          # 创建干净的发布文件夹（避免嵌套）
-          mkdir -p publish/linux-clean
-          cp -r publish/temp-linux/* publish/linux-clean/
+            -o publish/linux-clean
           
-          # 复制 Content 目录（单文件发布可能不会自动包含 MonoGame Content）
-          if [ -d "src/SnakeGame.App/Content/bin/DesktopGL/Content" ]; then
-            cp -r src/SnakeGame.App/Content/bin/DesktopGL/Content publish/linux-clean/
-            echo "Copied Content directory"
-          else
-            echo "Warning: Content source not found"
+          # 删除可能不完整的 Content 目录，然后复制完整的
+          contentSrc="src/SnakeGame.App/Content/bin/DesktopGL/Content"
+          contentDest="publish/linux-clean/Content"
+          if [ -d "$contentDest" ]; then
+            rm -rf "$contentDest"
+            echo "Removed incomplete Content directory"
           fi
-      
-      - name: Create TAR.GZ archive
-        run: |
-          cd publish/linux-clean
-          tar -czvf ../../SnakeGame-Linux-x64.tar.gz *
-          cd ../..
-          echo "Created: SnakeGame-Linux-x64.tar.gz"
-          du -sh SnakeGame-Linux-x64.tar.gz
+          if [ -d "$contentSrc" ]; then
+            cp -r "$contentSrc" "$contentDest"
+            echo "Copied complete Content directory"
+            find "$contentDest" -name "*.xnb" | wc -l
+          fi
       
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
           name: SnakeGame-Linux-x64
-          path: SnakeGame-Linux-x64.tar.gz
+          path: publish/linux-clean/*
           retention-days: 30
           if-no-files-found: error
 
@@ -166,20 +152,20 @@ jobs:
         run: |
           echo "## 📦 构建产物"
           echo ""
-          echo "| 平台 | 文件 | 大小 |"
-          echo "|------|------|------|"
-          echo "| Windows x64 | SnakeGame-Windows-x64.zip | $(du -h ./windows/*.zip | cut -f1) |"
-          echo "| Linux x64 | SnakeGame-Linux-x64.tar.gz | $(du -h ./linux/*.tar.gz | cut -f1) |"
+          echo "| 平台 | 文件数 | 大小 |"
+          echo "|------|--------|------|"
+          echo "| Windows x64 | $(find ./windows -type f | wc -l) | $(du -sh ./windows | cut -f1) |"
+          echo "| Linux x64 | $(find ./linux -type f | wc -l) | $(du -sh ./linux | cut -f1) |"
           echo ""
           echo "### 下载方式"
           echo "1. 点击本页面顶部的 'Artifacts' 按钮"
-          echo "2. 选择对应平台的压缩包下载"
+          echo "2. 选择对应平台的包下载"
           echo "3. 解压后即可运行"
           echo ""
           echo "### 运行说明"
           echo "**Windows**:"
           echo '```'
-          echo "SnakeGame-Windows-x64/SnakeGame.App.exe"
+          echo "./SnakeGame.App.exe"
           echo '```'
           echo ""
           echo "**Linux**:"
