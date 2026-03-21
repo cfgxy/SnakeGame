@@ -1,6 +1,6 @@
 #----------------------------- Global Properties ----------------------------#
 
-/outputDir:
+/outputDir:bin/$(Platform)
 /intermediateDir:obj/$(Platform)
 /profile:Reach
 /compress:False
