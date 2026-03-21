@@ -318,8 +318,30 @@ internal sealed class SnakeGameApp : Game
                 leaderboard = leaderboardStore.Load();
             }
 
+            // 触发粒子特效
+            if (result.AteApple && session.ApplePosition.HasValue)
+            {
+                var boardWidth = session.BoardSize.Width * CellSize;
+                const int boardX = 130;
+                const int boardY = 110;
+                var applePos = session.ApplePosition.Value;
+                var particlePos = new Vector2(boardX + applePos.X * CellSize + CellSize / 2f, boardY + applePos.Y * CellSize + CellSize / 2f);
+                particleSystem.Emit(particlePos, ParticleType.Food, 15);
+            }
+
             if (result.Status is GameStepStatus.GameOver or GameStepStatus.Completed)
             {
+                // 死亡粒子特效
+                if (session.SnakeSegments.Count > 0)
+                {
+                    var boardWidth = session.BoardSize.Width * CellSize;
+                    const int boardX = 130;
+                    const int boardY = 110;
+                    var headPos = session.SnakeSegments[0];
+                    var particlePos = new Vector2(boardX + headPos.X * CellSize + CellSize / 2f, boardY + headPos.Y * CellSize + CellSize / 2f);
+                    particleSystem.Emit(particlePos, ParticleType.Death, 30);
+                }
+                
                 screen = AppScreen.Result;
                 paused = false;
                 break;
@@ -472,6 +494,9 @@ internal sealed class SnakeGameApp : Game
         DrawSnakeNew(session, boardX, boardY);
 
         DrawHud(session, boardX + boardWidth + 40, boardY);
+
+        // 绘制粒子特效
+        particleSystem.Draw(spriteBatch);
 
         if (paused)
         {
