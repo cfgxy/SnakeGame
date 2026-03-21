@@ -1,0 +1,172 @@
+name: Build Artifact
+
+on:
+  workflow_dispatch:  # 手动触发
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'src/**'
+      - '.github/workflows/build-artifact.yml'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.419
+      
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+      
+      - name: Restore solution
+        run: dotnet restore SnakeGame.sln
+      
+      - name: Build solution
+        run: dotnet build SnakeGame.sln -c Release --no-restore -p:UseSharedCompilation=false -m:1
+      
+      - name: Test SnakeGame.Core
+        run: dotnet test tests/SnakeGame.Core.Tests/SnakeGame.Core.Tests.csproj -c Release --no-build -p:UseSharedCompilation=false -m:1
+      
+      - name: Publish Windows x64
+        run: |
+          # 发布到临时文件夹
+          dotnet publish src/SnakeGame.App/SnakeGame.App.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:PublishReadyToRun=true `
+            -o publish/temp-win
+      
+          # 创建干净的发布文件夹（避免嵌套）
+          New-Item -ItemType Directory -Force -Path publish/win-clean
+          Copy-Item -Path "publish/temp-win/*" -Destination "publish/win-clean/" -Recurse -Force
+      
+      - name: Create ZIP archive
+        run: |
+          Compress-Archive -Path publish/win-clean/* -DestinationPath SnakeGame-Windows-x64.zip
+          Write-Host "Created: SnakeGame-Windows-x64.zip"
+          Get-ChildItem -Recurse publish/win-clean | Measure-Object -Property Length -Sum | Select-Object Count, @{Name="Size(MB)";Expression={[math]::Round($_.Sum/1MB,2)}}
+      
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SnakeGame-Windows-x64
+          path: SnakeGame-Windows-x64.zip
+          retention-days: 30
+          if-no-files-found: error
+
+  build-linux:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Install fonts
+        run: |
+          echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | sudo debconf-set-selections
+          sudo apt-get update
+          sudo apt-get install -y fonts-liberation ttf-mscorefonts-installer
+          sudo fc-cache -fv
+      
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.419
+      
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+      
+      - name: Restore solution
+        run: dotnet restore SnakeGame.sln
+      
+      - name: Build solution
+        run: dotnet build SnakeGame.sln -c Release --no-restore -p:UseSharedCompilation=false -m:1
+      
+      - name: Test SnakeGame.Core
+        run: dotnet test tests/SnakeGame.Core.Tests/SnakeGame.Core.Tests.csproj -c Release --no-build -p:UseSharedCompilation=false -m:1
+      
+      - name: Publish Linux x64
+        run: |
+          # 发布到临时文件夹
+          dotnet publish src/SnakeGame.App/SnakeGame.App.csproj \
+            -c Release \
+            -r linux-x64 \
+            --self-contained true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:PublishReadyToRun=true \
+            -o publish/temp-linux
+      
+          # 创建干净的发布文件夹（避免嵌套）
+          mkdir -p publish/linux-clean
+          cp -r publish/temp-linux/* publish/linux-clean/
+      
+      - name: Create TAR.GZ archive
+        run: |
+          cd publish/linux-clean
+          tar -czvf ../../SnakeGame-Linux-x64.tar.gz *
+          cd ../..
+          echo "Created: SnakeGame-Linux-x64.tar.gz"
+          du -sh SnakeGame-Linux-x64.tar.gz
+      
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SnakeGame-Linux-x64
+          path: SnakeGame-Linux-x64.tar.gz
+          retention-days: 30
+          if-no-files-found: error
+
+  build-summary:
+    runs-on: ubuntu-latest
+    needs: [build-windows, build-linux]
+    
+    steps:
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: SnakeGame-Windows-x64
+          path: ./windows
+      
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: SnakeGame-Linux-x64
+          path: ./linux
+      
+      - name: List artifacts
+        run: |
+          echo "## 📦 构建产物"
+          echo ""
+          echo "| 平台 | 文件 | 大小 |"
+          echo "|------|------|------|"
+          echo "| Windows x64 | SnakeGame-Windows-x64.zip | $(du -h ./windows/*.zip | cut -f1) |"
+          echo "| Linux x64 | SnakeGame-Linux-x64.tar.gz | $(du -h ./linux/*.tar.gz | cut -f1) |"
+          echo ""
+          echo "### 下载方式"
+          echo "1. 点击本页面顶部的 'Artifacts' 按钮"
+          echo "2. 选择对应平台的压缩包下载"
+          echo "3. 解压后即可运行"
+          echo ""
+          echo "### 运行说明"
+          echo "**Windows**:"
+          echo '```'
+          echo "SnakeGame-Windows-x64/SnakeGame.App.exe"
+          echo '```'
+          echo ""
+          echo "**Linux**:"
+          echo '```'
+          echo "chmod +x SnakeGame.App"
+          echo "./SnakeGame.App"
+          echo '```'
+        shell: bash

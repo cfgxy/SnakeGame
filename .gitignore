@@ -1,0 +1,7 @@
+/*.txt
+bin/
+obj/
+TestResults/
+artifacts/
+*.trx
+*.coverage
