@@ -5,6 +5,13 @@
 /profile:Reach
 /compress:False
 
+#---------------------------------- Fonts -----------------------------------#
+
+#begin UIFont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:UIFont.spritefont
+
 #---------------------------------- Sprites ---------------------------------#
 
 #begin sprites/snake/snake_head
