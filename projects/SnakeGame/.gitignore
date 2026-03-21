@@ -1,0 +1,7 @@
+# Build artifacts
+artifacts/
+*.tar.gz
+*.zip
+
+# Config with secrets
+config.json
