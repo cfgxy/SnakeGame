@@ -211,7 +211,7 @@ public sealed class SpriteRenderer
     /// <summary>
     /// 绘制矩形（使用白色像素纹理）
     /// </summary>
-    public void DrawRectangle(SpriteBatch spriteBatch, Rectangle rectangle, Color color)
+    public void DrawRectangle(SpriteBatch spriteBatch, Microsoft.Xna.Framework.Rectangle rectangle, Microsoft.Xna.Framework.Color color)
     {
         spriteBatch.Draw(Pixel, rectangle, color);
     }
@@ -219,7 +219,7 @@ public sealed class SpriteRenderer
     /// <summary>
     /// 绘制圆形（使用粒子纹理）
     /// </summary>
-    public void DrawCircle(SpriteBatch spriteBatch, Vector2 position, float scale, Color color)
+    public void DrawCircle(SpriteBatch spriteBatch, Vector2 position, float scale, Microsoft.Xna.Framework.Color color)
     {
         spriteBatch.Draw(ParticleCircle, position, null, color, 0, 
             new Vector2(ParticleCircle.Width / 2f, ParticleCircle.Height / 2f), 

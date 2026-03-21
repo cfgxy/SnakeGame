@@ -75,14 +75,14 @@ public sealed class ParticleSystem
         }
     }
     
-    private static Color GetParticleColor(ParticleType type)
+    private static Microsoft.Xna.Framework.Color GetParticleColor(ParticleType type)
     {
         return type switch
         {
-            ParticleType.Food => new Color(255, 230, 109),  // 柠檬黄
-            ParticleType.Death => new Color(255, 255, 255), // 白色
-            ParticleType.Celebration => new Color(255, 107, 107), // 珊瑚红
-            _ => Color.White
+            ParticleType.Food => new Microsoft.Xna.Framework.Color(255, 230, 109),  // 柠檬黄
+            ParticleType.Death => new Microsoft.Xna.Framework.Color(255, 255, 255), // 白色
+            ParticleType.Celebration => new Microsoft.Xna.Framework.Color(255, 107, 107), // 珊瑚红
+            _ => Microsoft.Xna.Framework.Color.White
         };
     }
     
@@ -115,7 +115,7 @@ sealed class Particle
     public float StartScale { get; set; }
     public float EndScale { get; set; }
     public float Scale { get; set; }
-    public Color Color { get; set; }
+    public Microsoft.Xna.Framework.Color Color { get; set; }
     public float Lifetime { get; set; }
     public float MaxLifetime { get; set; }
 }
