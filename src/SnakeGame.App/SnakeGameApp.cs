@@ -419,8 +419,12 @@ internal sealed class SnakeGameApp : Game
     private void DrawSettings()
     {
         DrawTitle("设置");
+        
+        // 绘制 BGM 切换按钮
         var bgmText = audioSettings.BgmEnabled ? "BGM: 开启" : "BGM: 关闭";
-        spriteBatch.DrawString(font, bgmText, new Vector2(420, 260), new Color(255, 226, 124));
+        var buttonState = Rendering.ButtonState.Hover; // 简化处理，始终显示悬停状态
+        spriteRenderer.DrawButton(spriteBatch, new Vector2(420, 260), buttonState, bgmText);
+        
         spriteBatch.DrawString(font, "左右键或回车切换", new Vector2(420, 320), Color.White);
         DrawFooter("Esc 返回");
     }
@@ -537,9 +541,13 @@ internal sealed class SnakeGameApp : Game
     {
         for (var index = 0; index < options.Count; index++)
         {
-            var color = index == activeIndex ? new Color(255, 226, 124) : Color.White;
-            var prefix = index == activeIndex ? ">" : " ";
-            spriteBatch.DrawString(font, $"{prefix} {options[index]}", new Vector2(420, startY + (index * 52)), color);
+            var buttonX = 420f;
+            var buttonY = startY + (index * 60);
+            var isActive = index == activeIndex;
+            
+            // 绘制按钮背景
+            var buttonState = isActive ? Rendering.ButtonState.Hover : Rendering.ButtonState.Normal;
+            spriteRenderer.DrawButton(spriteBatch, new Vector2(buttonX, buttonY), buttonState, options[index]);
         }
     }
 
@@ -561,8 +569,14 @@ internal sealed class SnakeGameApp : Game
     private void DrawOverlayPanel(string title, string message, string footer)
     {
         var box = new Rectangle(350, 230, 540, 220);
-        DrawRectangle(box, new Color(10, 18, 26) * 0.95f);
-        DrawRectangle(new Rectangle(box.X, box.Y, box.Width, 2), new Color(255, 226, 124));
+        
+        // 绘制半透明背景
+        spriteRenderer.DrawRectangle(spriteBatch, box, new Color(10, 18, 26) * 0.95f);
+        
+        // 绘制顶部金色边框
+        spriteRenderer.DrawRectangle(spriteBatch, new Rectangle(box.X, box.Y, box.Width, 4), new Color(255, 226, 124));
+        
+        // 绘制标题
         spriteBatch.DrawString(font, title, new Vector2(box.X + 40, box.Y + 30), new Color(255, 226, 124));
 
         if (!string.IsNullOrWhiteSpace(message))
