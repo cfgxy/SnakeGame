@@ -40,24 +40,3 @@ jobs:
 
       - name: Test SnakeGame.Core
         run: dotnet test tests/SnakeGame.Core.Tests/SnakeGame.Core.Tests.csproj -c Release --no-build -p:UseSharedCompilation=false -m:1
-
-      - name: Publish (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          dotnet publish src/SnakeGame.App/SnakeGame.App.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
-          mkdir -p artifacts/linux
-          cp src/SnakeGame.App/bin/Release/net8.0/linux-x64/publish/SnakeGame.App artifacts/linux/
-
-      - name: Publish (Windows)
-        if: matrix.os == 'windows-latest'
-        run: |
-          dotnet publish src/SnakeGame.App/SnakeGame.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
-          mkdir -p artifacts/windows
-          cp src/SnakeGame.App/bin/Release/net8.0/win-x64/publish/SnakeGame.App.exe artifacts/windows/
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: SnakeGame-${{ matrix.os }}
-          path: artifacts/
-          retention-days: 14

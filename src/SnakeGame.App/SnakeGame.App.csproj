@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!-- Windows 配置 -->
-  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+  <PropertyGroup Condition=" $([MSBuild]::IsOSPlatform('Windows')) ">
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <!-- Linux 配置 -->
-  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+  <PropertyGroup Condition=" $([MSBuild]::IsOSPlatform('Linux')) ">
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -28,12 +28,12 @@
   </ItemGroup>
 
   <!-- Windows 使用 WindowsDX -->
-  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+  <ItemGroup Condition=" $([MSBuild]::IsOSPlatform('Windows')) ">
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
   </ItemGroup>
 
   <!-- Linux 使用 DesktopGL -->
-  <ItemGroup Condition="'$(OS)' != 'Windows_NT'">
+  <ItemGroup Condition=" $([MSBuild]::IsOSPlatform('Linux')) ">
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
   </ItemGroup>
 
