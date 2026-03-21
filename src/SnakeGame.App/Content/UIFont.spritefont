@@ -7,10 +7,96 @@
     <UseKerning>true</UseKerning>
     <Style>Regular</Style>
     <CharacterRegions>
+      <!-- ASCII 基本字符集 -->
       <CharacterRegion>
         <Start>&#32;</Start>
         <End>&#126;</End>
       </CharacterRegion>
+      <!-- 中文字符 - 游戏UI所需 -->
+      <CharacterRegion><Start>&#19968;</Start><End>&#19968;</End></CharacterRegion> <!-- 一 -->
+      <CharacterRegion><Start>&#19978;</Start><End>&#19978;</End></CharacterRegion> <!-- 上 -->
+      <CharacterRegion><Start>&#19979;</Start><End>&#19979;</End></CharacterRegion> <!-- 下 -->
+      <CharacterRegion><Start>&#20013;</Start><End>&#20013;</End></CharacterRegion> <!-- 中 -->
+      <CharacterRegion><Start>&#20027;</Start><End>&#20027;</End></CharacterRegion> <!-- 主 -->
+      <CharacterRegion><Start>&#20064;</Start><End>&#20064;</End></CharacterRegion> <!-- 习 -->
+      <CharacterRegion><Start>&#20851;</Start><End>&#20851;</End></CharacterRegion> <!-- 关 -->
+      <CharacterRegion><Start>&#20986;</Start><End>&#20986;</End></CharacterRegion> <!-- 出 -->
+      <CharacterRegion><Start>&#20998;</Start><End>&#20998;</End></CharacterRegion> <!-- 分 -->
+      <CharacterRegion><Start>&#21040;</Start><End>&#21040;</End></CharacterRegion> <!-- 到 -->
+      <CharacterRegion><Start>&#21160;</Start><End>&#21160;</End></CharacterRegion> <!-- 动 -->
+      <CharacterRegion><Start>&#21152;</Start><End>&#21152;</End></CharacterRegion> <!-- 加 -->
+      <CharacterRegion><Start>&#21333;</Start><End>&#21333;</End></CharacterRegion> <!-- 单 -->
+      <CharacterRegion><Start>&#21345;</Start><End>&#21345;</End></CharacterRegion> <!-- 卡 -->
+      <CharacterRegion><Start>&#21491;</Start><End>&#21491;</End></CharacterRegion> <!-- 右 -->
+      <CharacterRegion><Start>&#21507;</Start><End>&#21507;</End></CharacterRegion> <!-- 吃 -->
+      <CharacterRegion><Start>&#21513;</Start><End>&#21513;</End></CharacterRegion> <!-- 启 -->
+      <CharacterRegion><Start>&#21521;</Start><End>&#21521;</End></CharacterRegion> <!-- 向 -->
+      <CharacterRegion><Start>&#21551;</Start><End>&#21551;</End></CharacterRegion> <!-- 启 -->
+      <CharacterRegion><Start>&#22238;</Start><End>&#22238;</End></CharacterRegion> <!-- 回 -->
+      <CharacterRegion><Start>&#22987;</Start><End>&#22987;</End></CharacterRegion> <!-- 始 -->
+      <CharacterRegion><Start>&#23478;</Start><End>&#23478;</End></CharacterRegion> <!-- 家 -->
+      <CharacterRegion><Start>&#24230;</Start><End>&#24230;</End></CharacterRegion> <!-- 度 -->
+      <CharacterRegion><Start>&#24314;</Start><End>&#24314;</End></CharacterRegion> <!-- 始 -->
+      <CharacterRegion><Start>&#24320;</Start><End>&#24320;</End></CharacterRegion> <!-- 开 -->
+      <CharacterRegion><Start>&#24335;</Start><End>&#24335;</End></CharacterRegion> <!-- 式 -->
+      <CharacterRegion><Start>&#24403;</Start><End>&#24403;</End></CharacterRegion> <!-- 当 -->
+      <CharacterRegion><Start>&#25103;</Start><End>&#25103;</End></CharacterRegion> <!-- 戏 -->
+      <CharacterRegion><Start>&#25104;</Start><End>&#25104;</End></CharacterRegion> <!-- 成 -->
+      <CharacterRegion><Start>&#25110;</Start><End>&#25110;</End></CharacterRegion> <!-- 或 -->
+      <CharacterRegion><Start>&#25321;</Start><End>&#25321;</End></CharacterRegion> <!-- 择 -->
+      <CharacterRegion><Start>&#25438;</Start><End>&#25438;</End></CharacterRegion> <!-- 抄 -->
+      <CharacterRegion><Start>&#25442;</Start><End>&#25442;</End></CharacterRegion> <!-- 换 -->
+      <CharacterRegion><Start>&#25490;</Start><End>&#25490;</End></CharacterRegion> <!-- 排 -->
+      <CharacterRegion><Start>&#25968;</Start><End>&#25968;</End></CharacterRegion> <!-- 数 -->
+      <CharacterRegion><Start>&#26041;</Start><End>&#26041;</End></CharacterRegion> <!-- 方 -->
+      <CharacterRegion><Start>&#26222;</Start><End>&#26222;</End></CharacterRegion> <!-- 普 -->
+      <CharacterRegion><Start>&#26242;</Start><End>&#26242;</End></CharacterRegion> <!-- 暂 -->
+      <CharacterRegion><Start>&#26377;</Start><End>&#26377;</End></CharacterRegion> <!-- 有 -->
+      <CharacterRegion><Start>&#26463;</Start><End>&#26463;</End></CharacterRegion> <!-- 束 -->
+      <CharacterRegion><Start>&#26631;</Start><End>&#26631;</End></CharacterRegion> <!-- 标 -->
+      <CharacterRegion><Start>&#27036;</Start><End>&#27036;</End></CharacterRegion> <!-- 榜 -->
+      <CharacterRegion><Start>&#27169;</Start><End>&#27169;</End></CharacterRegion> <!-- 模 -->
+      <CharacterRegion><Start>&#27809;</Start><End>&#27809;</End></CharacterRegion> <!-- 没 -->
+      <CharacterRegion><Start>&#28216;</Start><End>&#28216;</End></CharacterRegion> <!-- 游 -->
+      <CharacterRegion><Start>&#29366;</Start><End>&#29366;</End></CharacterRegion> <!-- 状 -->
+      <CharacterRegion><Start>&#29609;</Start><End>&#29609;</End></CharacterRegion> <!-- 玩 -->
+      <CharacterRegion><Start>&#30446;</Start><End>&#30446;</End></CharacterRegion> <!-- 目 -->
+      <CharacterRegion><Start>&#30830;</Start><End>&#30830;</End></CharacterRegion> <!-- 确 -->
+      <CharacterRegion><Start>&#31227;</Start><End>&#31227;</End></CharacterRegion> <!-- 移 -->
+      <CharacterRegion><Start>&#31561;</Start><End>&#31561;</End></CharacterRegion> <!-- 等 -->
+      <CharacterRegion><Start>&#31532;</Start><End>&#31532;</End></CharacterRegion> <!-- 第 -->
+      <CharacterRegion><Start>&#32467;</Start><End>&#32467;</End></CharacterRegion> <!-- 结 -->
+      <CharacterRegion><Start>&#32451;</Start><End>&#32451;</End></CharacterRegion> <!-- 练 -->
+      <CharacterRegion><Start>&#32622;</Start><End>&#32622;</End></CharacterRegion> <!-- 置 -->
+      <CharacterRegion><Start>&#33756;</Start><End>&#33756;</End></CharacterRegion> <!-- 菜 -->
+      <CharacterRegion><Start>&#34503;</Start><End>&#34503;</End></CharacterRegion> <!-- 蛇 -->
+      <CharacterRegion><Start>&#35760;</Start><End>&#35760;</End></CharacterRegion> <!-- 记 -->
+      <CharacterRegion><Start>&#35774;</Start><End>&#35774;</End></CharacterRegion> <!-- 设 -->
+      <CharacterRegion><Start>&#35748;</Start><End>&#35748;</End></CharacterRegion> <!-- 认 -->
+      <CharacterRegion><Start>&#35831;</Start><End>&#35831;</End></CharacterRegion> <!-- 请 -->
+      <CharacterRegion><Start>&#36138;</Start><End>&#36138;</End></CharacterRegion> <!-- 贪 -->
+      <CharacterRegion><Start>&#36710;</Start><End>&#36710;</End></CharacterRegion> <!-- 车 -->
+      <CharacterRegion><Start>&#36716;</Start><End>&#36716;</End></CharacterRegion> <!-- 转 -->
+      <CharacterRegion><Start>&#36798;</Start><End>&#36798;</End></CharacterRegion> <!-- 达 -->
+      <CharacterRegion><Start>&#36816;</Start><End>&#36816;</End></CharacterRegion> <!-- 运 -->
+      <CharacterRegion><Start>&#36820;</Start><End>&#36820;</End></CharacterRegion> <!-- 返 -->
+      <CharacterRegion><Start>&#36824;</Start><End>&#36824;</End></CharacterRegion> <!-- 还 -->
+      <CharacterRegion><Start>&#36864;</Start><End>&#36864;</End></CharacterRegion> <!-- 退 -->
+      <CharacterRegion><Start>&#36873;</Start><End>&#36873;</End></CharacterRegion> <!-- 选 -->
+      <CharacterRegion><Start>&#36895;</Start><End>&#36895;</End></CharacterRegion> <!-- 速 -->
+      <CharacterRegion><Start>&#36890;</Start><End>&#36890;</End></CharacterRegion> <!-- 通 -->
+      <CharacterRegion><Start>&#38190;</Start><End>&#38190;</End></CharacterRegion> <!-- 键 -->
+      <CharacterRegion><Start>&#38271;</Start><End>&#38271;</End></CharacterRegion> <!-- 长 -->
+      <CharacterRegion><Start>&#38381;</Start><End>&#38381;</End></CharacterRegion> <!-- 闭 -->
+      <CharacterRegion><Start>&#38383;</Start><End>&#38383;</End></CharacterRegion> <!-- 闯 -->
+      <CharacterRegion><Start>&#20999;</Start><End>&#20999;</End></CharacterRegion> <!-- 切 -->
+      <CharacterRegion><Start>&#20572;</Start><End>&#20572;</End></CharacterRegion> <!-- 停 -->
+      <CharacterRegion><Start>&#23436;</Start><End>&#23436;</End></CharacterRegion> <!-- 完 -->
+      <CharacterRegion><Start>&#24038;</Start><End>&#24038;</End></CharacterRegion> <!-- 左 -->
+      <CharacterRegion><Start>&#21069;</Start><End>&#21069;</End></CharacterRegion> <!-- 前 -->
+      <CharacterRegion><Start>&#24405;</Start><End>&#24405;</End></CharacterRegion> <!-- 录 -->
+      <CharacterRegion><Start>&#24577;</Start><End>&#24577;</End></CharacterRegion> <!-- 态 -->
+      <CharacterRegion><Start>&#34892;</Start><End>&#34892;</End></CharacterRegion> <!-- 行 -->
     </CharacterRegions>
   </Asset>
 </XnaContent>
