@@ -49,13 +49,6 @@ jobs:
           # 创建干净的发布文件夹（避免嵌套）
           New-Item -ItemType Directory -Force -Path publish/win-clean
           Copy-Item -Path "publish/temp-win/*" -Destination "publish/win-clean/" -Recurse -Force
-          
-          # 复制 Content 目录（单文件发布不会自动包含 MonoGame Content）
-          $contentSrc = "src/SnakeGame.App/Content/Content"
-          $contentDest = "publish/win-clean/Content"
-          if (Test-Path $contentSrc) {
-            Copy-Item -Path $contentSrc -Destination $contentDest -Recurse -Force
-          }
       
       - name: Create ZIP archive
         run: |
@@ -117,11 +110,6 @@ jobs:
           # 创建干净的发布文件夹（避免嵌套）
           mkdir -p publish/linux-clean
           cp -r publish/temp-linux/* publish/linux-clean/
-          
-          # 复制 Content 目录（单文件发布不会自动包含 MonoGame Content）
-          if [ -d "src/SnakeGame.App/Content/Content" ]; then
-            cp -r src/SnakeGame.App/Content/Content publish/linux-clean/
-          fi
       
       - name: Create TAR.GZ archive
         run: |

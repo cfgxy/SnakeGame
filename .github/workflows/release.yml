@@ -44,14 +44,6 @@ jobs:
 
       - name: Publish app
         run: dotnet publish src/SnakeGame.App/SnakeGame.App.csproj -c Release -r ${{ env.RID }} --self-contained false --no-restore -p:UseSharedCompilation=false -o ${{ env.PUBLISH_DIR }}
-      
-      - name: Copy Content
-        run: |
-          $contentSrc = "src/SnakeGame.App/Content/Content"
-          $contentDest = "${{ env.PUBLISH_DIR }}/Content"
-          if (Test-Path $contentSrc) {
-            Copy-Item -Path $contentSrc -Destination $contentDest -Recurse -Force
-          }
 
       - name: Archive release package and checksum
         id: package
