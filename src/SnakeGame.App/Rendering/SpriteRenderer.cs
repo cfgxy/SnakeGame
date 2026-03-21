@@ -54,7 +54,7 @@ public sealed class SpriteRenderer
     {
         // 创建白色像素纹理（用于绘制矩形）
         Pixel = new Texture2D(_graphicsDevice, 1, 1);
-        Pixel.SetData([Color.White]);
+        Pixel.SetData([Microsoft.Xna.Framework.Color.White]);
         
         // 加载字体
         Font = _content.Load<SpriteFont>("UIFont");
@@ -90,7 +90,7 @@ public sealed class SpriteRenderer
     /// </summary>
     public void DrawBackground(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(BackgroundGradient, Vector2.Zero, Color.White);
+        spriteBatch.Draw(BackgroundGradient, Vector2.Zero, Microsoft.Xna.Framework.Color.White);
     }
     
     /// <summary>
@@ -104,8 +104,8 @@ public sealed class SpriteRenderer
             {
                 spriteBatch.Draw(
                     GridTile,
-                    new Rectangle(boardX + x * cellSize, boardY + y * cellSize, cellSize, cellSize),
-                    Color.White * 0.4f);
+                    new Microsoft.Xna.Framework.Rectangle(boardX + x * cellSize, boardY + y * cellSize, cellSize, cellSize),
+                    Microsoft.Xna.Framework.Color.White * 0.4f);
             }
         }
     }
@@ -120,7 +120,7 @@ public sealed class SpriteRenderer
             SnakeHead,
             position + new Vector2(cellSize / 2f, cellSize / 2f),
             null,
-            Color.White,
+            Microsoft.Xna.Framework.Color.White,
             rotation,
             origin,
             (float)cellSize / SnakeHead.Height,
@@ -135,7 +135,7 @@ public sealed class SpriteRenderer
     {
         var scale = (float)cellSize / SnakeBody.Height;
         var offset = new Vector2((cellSize - SnakeBody.Width * scale) / 2f, (cellSize - SnakeBody.Height * scale) / 2f);
-        spriteBatch.Draw(SnakeBody, position + offset, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+        spriteBatch.Draw(SnakeBody, position + offset, null, Microsoft.Xna.Framework.Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
     }
     
     /// <summary>
@@ -148,7 +148,7 @@ public sealed class SpriteRenderer
             SnakeTail,
             position + new Vector2(cellSize / 2f, cellSize / 2f),
             null,
-            Color.White,
+            Microsoft.Xna.Framework.Color.White,
             rotation,
             origin,
             (float)cellSize / SnakeTail.Height,
@@ -174,7 +174,7 @@ public sealed class SpriteRenderer
             texture,
             position + new Vector2(cellSize / 2f, cellSize / 2f),
             null,
-            Color.White,
+            Microsoft.Xna.Framework.Color.White,
             0,
             origin,
             (float)cellSize / texture.Height,
@@ -196,7 +196,7 @@ public sealed class SpriteRenderer
             _ => ButtonNormal
         };
         
-        spriteBatch.Draw(texture, position, Color.White);
+        spriteBatch.Draw(texture, position, Microsoft.Xna.Framework.Color.White);
         
         // 绘制文字（居中）
         var textSize = Font.MeasureString(text);
@@ -204,7 +204,7 @@ public sealed class SpriteRenderer
             (texture.Width - textSize.X) / 2f,
             (texture.Height - textSize.Y) / 2f);
         
-        var textColor = state == ButtonState.Disabled ? Color.Gray : Color.White;
+        var textColor = state == ButtonState.Disabled ? Microsoft.Xna.Framework.Color.Gray : Microsoft.Xna.Framework.Color.White;
         spriteBatch.DrawString(Font, text, textPosition, textColor);
     }
     
