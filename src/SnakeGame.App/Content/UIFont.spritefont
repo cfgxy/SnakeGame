@@ -1,91 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
   <Asset Type="Graphics:FontDescription">
-    <FontName>Microsoft YaHei</FontName>
+    <FontName>Arial</FontName>
     <Size>22</Size>
     <Spacing>0</Spacing>
     <UseKerning>true</UseKerning>
     <Style>Regular</Style>
     <CharacterRegions>
-      <CharacterRegion><Start> </Start><End>~</End></CharacterRegion>
-      <CharacterRegion><Start>一</Start><End>一</End></CharacterRegion>
-      <CharacterRegion><Start>上</Start><End>上</End></CharacterRegion>
-      <CharacterRegion><Start>下</Start><End>下</End></CharacterRegion>
-      <CharacterRegion><Start>中</Start><End>中</End></CharacterRegion>
-      <CharacterRegion><Start>主</Start><End>主</End></CharacterRegion>
-      <CharacterRegion><Start>习</Start><End>习</End></CharacterRegion>
-      <CharacterRegion><Start>停</Start><End>停</End></CharacterRegion>
-      <CharacterRegion><Start>关</Start><End>关</End></CharacterRegion>
-      <CharacterRegion><Start>出</Start><End>出</End></CharacterRegion>
-      <CharacterRegion><Start>分</Start><End>分</End></CharacterRegion>
-      <CharacterRegion><Start>切</Start><End>切</End></CharacterRegion>
-      <CharacterRegion><Start>到</Start><End>到</End></CharacterRegion>
-      <CharacterRegion><Start>前</Start><End>前</End></CharacterRegion>
-      <CharacterRegion><Start>加</Start><End>加</End></CharacterRegion>
-      <CharacterRegion><Start>动</Start><End>动</End></CharacterRegion>
-      <CharacterRegion><Start>单</Start><End>单</End></CharacterRegion>
-      <CharacterRegion><Start>卡</Start><End>卡</End></CharacterRegion>
-      <CharacterRegion><Start>右</Start><End>右</End></CharacterRegion>
-      <CharacterRegion><Start>吃</Start><End>吃</End></CharacterRegion>
-      <CharacterRegion><Start>向</Start><End>向</End></CharacterRegion>
-      <CharacterRegion><Start>启</Start><End>启</End></CharacterRegion>
-      <CharacterRegion><Start>回</Start><End>回</End></CharacterRegion>
-      <CharacterRegion><Start>始</Start><End>始</End></CharacterRegion>
-      <CharacterRegion><Start>完</Start><End>完</End></CharacterRegion>
-      <CharacterRegion><Start>家</Start><End>家</End></CharacterRegion>
-      <CharacterRegion><Start>左</Start><End>左</End></CharacterRegion>
-      <CharacterRegion><Start>度</Start><End>度</End></CharacterRegion>
-      <CharacterRegion><Start>开</Start><End>开</End></CharacterRegion>
-      <CharacterRegion><Start>式</Start><End>式</End></CharacterRegion>
-      <CharacterRegion><Start>当</Start><End>当</End></CharacterRegion>
-      <CharacterRegion><Start>录</Start><End>录</End></CharacterRegion>
-      <CharacterRegion><Start>态</Start><End>态</End></CharacterRegion>
-      <CharacterRegion><Start>戏</Start><End>戏</End></CharacterRegion>
-      <CharacterRegion><Start>成</Start><End>成</End></CharacterRegion>
-      <CharacterRegion><Start>或</Start><End>或</End></CharacterRegion>
-      <CharacterRegion><Start>择</Start><End>择</End></CharacterRegion>
-      <CharacterRegion><Start>换</Start><End>换</End></CharacterRegion>
-      <CharacterRegion><Start>排</Start><End>排</End></CharacterRegion>
-      <CharacterRegion><Start>数</Start><End>数</End></CharacterRegion>
-      <CharacterRegion><Start>方</Start><End>方</End></CharacterRegion>
-      <CharacterRegion><Start>普</Start><End>普</End></CharacterRegion>
-      <CharacterRegion><Start>暂</Start><End>暂</End></CharacterRegion>
-      <CharacterRegion><Start>有</Start><End>有</End></CharacterRegion>
-      <CharacterRegion><Start>束</Start><End>束</End></CharacterRegion>
-      <CharacterRegion><Start>标</Start><End>标</End></CharacterRegion>
-      <CharacterRegion><Start>榜</Start><End>榜</End></CharacterRegion>
-      <CharacterRegion><Start>模</Start><End>模</End></CharacterRegion>
-      <CharacterRegion><Start>没</Start><End>没</End></CharacterRegion>
-      <CharacterRegion><Start>游</Start><End>游</End></CharacterRegion>
-      <CharacterRegion><Start>状</Start><End>状</End></CharacterRegion>
-      <CharacterRegion><Start>玩</Start><End>玩</End></CharacterRegion>
-      <CharacterRegion><Start>目</Start><End>目</End></CharacterRegion>
-      <CharacterRegion><Start>确</Start><End>确</End></CharacterRegion>
-      <CharacterRegion><Start>移</Start><End>移</End></CharacterRegion>
-      <CharacterRegion><Start>第</Start><End>第</End></CharacterRegion>
-      <CharacterRegion><Start>练</Start><End>练</End></CharacterRegion>
-      <CharacterRegion><Start>结</Start><End>结</End></CharacterRegion>
-      <CharacterRegion><Start>置</Start><End>置</End></CharacterRegion>
-      <CharacterRegion><Start>菜</Start><End>菜</End></CharacterRegion>
-      <CharacterRegion><Start>蛇</Start><End>蛇</End></CharacterRegion>
-      <CharacterRegion><Start>行</Start><End>行</End></CharacterRegion>
-      <CharacterRegion><Start>认</Start><End>认</End></CharacterRegion>
-      <CharacterRegion><Start>记</Start><End>记</End></CharacterRegion>
-      <CharacterRegion><Start>设</Start><End>设</End></CharacterRegion>
-      <CharacterRegion><Start>请</Start><End>请</End></CharacterRegion>
-      <CharacterRegion><Start>贪</Start><End>贪</End></CharacterRegion>
-      <CharacterRegion><Start>车</Start><End>车</End></CharacterRegion>
-      <CharacterRegion><Start>达</Start><End>达</End></CharacterRegion>
-      <CharacterRegion><Start>返</Start><End>返</End></CharacterRegion>
-      <CharacterRegion><Start>还</Start><End>还</End></CharacterRegion>
-      <CharacterRegion><Start>退</Start><End>退</End></CharacterRegion>
-      <CharacterRegion><Start>选</Start><End>选</End></CharacterRegion>
-      <CharacterRegion><Start>通</Start><End>通</End></CharacterRegion>
-      <CharacterRegion><Start>速</Start><End>速</End></CharacterRegion>
-      <CharacterRegion><Start>键</Start><End>键</End></CharacterRegion>
-      <CharacterRegion><Start>长</Start><End>长</End></CharacterRegion>
-      <CharacterRegion><Start>闭</Start><End>闭</End></CharacterRegion>
-      <CharacterRegion><Start>闯</Start><End>闯</End></CharacterRegion>
+      <CharacterRegion>
+        <Start>&#32;</Start>
+        <End>&#126;</End>
+      </CharacterRegion>
     </CharacterRegions>
   </Asset>
 </XnaContent>
